@@ -114,6 +114,14 @@ a:hover {
   position: relative;
 }
 
+.element {
+  background-color: #1976d2;
+  border-color: #333;
+  cursor: pointer;
+  height: 100px;
+  width: 100px;
+}
+
 .terminal {
   position: relative;
   width: 80%;
@@ -140,7 +148,8 @@ a:hover {
   text-indent: 4px;
 }
 
-.terminal pre, p {
+.terminal pre,
+p {
   font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
   color: white;
   padding: 0 1rem 1rem;

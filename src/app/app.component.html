@@ -16,18 +16,18 @@
 
   <div class="card-container">
     <div
+      *ngFor="let observable of observables"
       class="card card-small"
       tabindex="0"
-      *ngFor="let observable of observables"
       (click)="observableMethods(observable.name, observable.info)"
     >
       <span>{{ observable.name }}</span>
     </div>
   </div>
 
-  <!-- <button mat-raised-button color="primary" (click)="unsubcribe()">
+  <button mat-raised-button color="warn" (click)="unsubcribe()" *ngIf="showButtonUnsubcribe">
     Desuscribirse
-  </button> -->
+  </button>
 
   <!-- Terminal -->
   <div class="terminal">
