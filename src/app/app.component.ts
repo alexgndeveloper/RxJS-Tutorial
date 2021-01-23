@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { timer, interval, Subscription, fromEvent } from 'rxjs';
+import { timer, interval, Subscription, fromEvent, of, pipe } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+
 import { TypeObservable } from './models/type-observable';
 
 @Component({
@@ -29,6 +31,7 @@ export class AppComponent implements OnInit {
    * Muestra el boton de Desuscripcion
    */
   public showButtonUnsubcribe = false;
+
   /**
    *  Suscripcion
    */
@@ -49,7 +52,7 @@ export class AppComponent implements OnInit {
    * Metodo para llamar a los diferentes metodos de los Observables
    * y mostrar su informacion
    * @param method Nombre del metodo
-   * @param info Informacion del observable que vamos a mostrar
+   * @param info Informacion del observable
    */
   public observableMethods(method: string, info: string): void {
     this.unsubcribe();
@@ -87,17 +90,25 @@ export class AppComponent implements OnInit {
   }
 
   /**
-   * Creamos un observable de la variable Filter
+   * Creamos un observable del operador Filter
    */
   private methodFilter(): void {
-    // TODO Metodo Filter
+    const nums = of(1, 2, 3, 4, 5);
+    const evenNumbers = filter((n: number) => n % 2 === 0);
+    this.subcription = evenNumbers(nums).subscribe((n: number) => {
+      this.result += `Número par: ${n} \n`;
+    });
   }
 
   /**
-   * Creamos un observable de la variable Map
+   * Creamos un observable del operador Map
    */
   private methodMap(): void {
-    // TODO Metodo Map
+    const nums = of(1, 2, 3, 4, 5);
+    const numbersSquared = map((n: number) => n * n);
+    this.subcription = numbersSquared(nums).subscribe((n: number) => {
+      this.result += `Número: ${n}\n`;
+    });
   }
 
   /**

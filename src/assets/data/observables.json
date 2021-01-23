@@ -13,10 +13,10 @@
   },
   {
     "name": "map",
-    "info": ""
+    "info": "Con el operador Map, vamos a realizar una operacion matematica para mostrar el número al cuadrado de la lista 1,2,3,4,5."
   },
   {
     "name": "filter",
-    "info": ""
+    "info": "Filtramos los números pares de una lista con 1,2,3,4,5 y nos suscribimos para mostrarlos."
   }
 ]
