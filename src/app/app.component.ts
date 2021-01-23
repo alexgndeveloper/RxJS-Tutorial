@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { timer, interval, Subscription, fromEvent } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { timer, interval, Subscription, fromEvent, of, pipe } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+
+import { TypeObservable } from './models/type-observable';
 
 @Component({
   selector: 'app-root',
@@ -22,40 +26,33 @@ export class AppComponent implements OnInit {
   /**
    * Lista de Observables
    */
-  public observables = [
-    {
-      name: 'interval',
-      info:
-        'El operador interval se ejecuta cada vez hasta el infinito o nos desuscribamos, el perido de tiempo que le ' +
-        'hayamos asignado en este caso 1 segundo (1000 milisegundos)',
-    },
-    {
-      name: 'timer',
-      info:
-        'Este observable se ejecuta pasado el tiempo que le hemos asignado, en este caso 3 segundos.',
-    },
-    {
-      name: 'fromEvent',
-      info:
-        'Clickea en la pagina y te muestra las coordenadas, es muy parecido a un listening pero en observable.',
-    },
-  ];
-
+  public observables: TypeObservable[] = [];
+  /**
+   * Muestra el boton de Desuscripcion
+   */
   public showButtonUnsubcribe = false;
+
   /**
    *  Suscripcion
    */
   private subcription: Subscription = new Subscription();
 
+  constructor(private http: HttpClient) {}
+
   ngOnInit(): void {
-    // TODO Cargar los observables, de un json
+    // Cargar los observables
+    this.http
+      .get<TypeObservable[]>('assets/data/observables.json')
+      .subscribe((res: TypeObservable[]) => {
+        this.observables = res;
+      });
   }
 
   /**
    * Metodo para llamar a los diferentes metodos de los Observables
    * y mostrar su informacion
    * @param method Nombre del metodo
-   * @param info Informacion del observable que vamos a mostrar
+   * @param info Informacion del observable
    */
   public observableMethods(method: string, info: string): void {
     this.unsubcribe();
@@ -71,6 +68,12 @@ export class AppComponent implements OnInit {
       case 'fromEvent':
         this.methodFromEvent();
         break;
+      case 'map':
+        this.methodMap();
+        break;
+      case 'filter':
+        this.methodFilter();
+        break;
       default:
         break;
     }
@@ -84,6 +87,28 @@ export class AppComponent implements OnInit {
     this.info = '';
     this.result = '';
     this.subcription.unsubscribe();
+  }
+
+  /**
+   * Creamos un observable del operador Filter
+   */
+  private methodFilter(): void {
+    const nums = of(1, 2, 3, 4, 5);
+    const evenNumbers = filter((n: number) => n % 2 === 0);
+    this.subcription = evenNumbers(nums).subscribe((n: number) => {
+      this.result += `Número par: ${n} \n`;
+    });
+  }
+
+  /**
+   * Creamos un observable del operador Map
+   */
+  private methodMap(): void {
+    const nums = of(1, 2, 3, 4, 5);
+    const numbersSquared = map((n: number) => n * n);
+    this.subcription = numbersSquared(nums).subscribe((n: number) => {
+      this.result += `Número: ${n}\n`;
+    });
   }
 
   /**
