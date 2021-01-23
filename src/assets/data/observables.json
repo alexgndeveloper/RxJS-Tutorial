@@ -1,0 +1,22 @@
+[
+  {
+    "name": "interval",
+    "info": "El operador interval se ejecuta cada vez hasta el infinito o nos desuscribamos, el perido de tiempo que le hayamos asignado en este caso 1 segundo (1000 milisegundos)"
+  },
+  {
+    "name": "timer",
+    "info": "Este observable se ejecuta pasado el tiempo que le hemos asignado, en este caso 3 segundos."
+  },
+  {
+    "name": "fromEvent",
+    "info": "Clickea en la pagina y te muestra las coordenadas, es muy parecido a un listening pero en observable."
+  },
+  {
+    "name": "map",
+    "info": ""
+  },
+  {
+    "name": "filter",
+    "info": ""
+  }
+]
