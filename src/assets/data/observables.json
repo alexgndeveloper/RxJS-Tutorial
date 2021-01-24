@@ -13,10 +13,14 @@
   },
   {
     "name": "map",
-    "info": "Con el operador Map, vamos a realizar una operacion matematica para mostrar el número al cuadrado de la lista 1,2,3,4,5."
+    "info": "El operador Map aplica una función a cada valor, en este caso vamos a realizar una operacion matematica para mostrar el número al cuadrado de la lista 1,2,3,4,5."
   },
   {
     "name": "filter",
     "info": "Filtramos los números pares de una lista con 1,2,3,4,5 y nos suscribimos para mostrarlos."
+  },
+  {
+    "name": "tap",
+    "info": "El operador Tap sirve para ejecutar acciones colaterales, en caso de a ver un error lo mostraria. Cuando hagamos click nos mostrara el evento."
   }
 ]

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { timer, interval, Subscription, fromEvent, of, pipe } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 
 import { TypeObservable } from './models/type-observable';
 
@@ -74,6 +74,9 @@ export class AppComponent implements OnInit {
       case 'filter':
         this.methodFilter();
         break;
+      case 'tap':
+        this.methodTap();
+        break;
       default:
         break;
     }
@@ -87,6 +90,21 @@ export class AppComponent implements OnInit {
     this.info = '';
     this.result = '';
     this.subcription.unsubscribe();
+  }
+
+  /**
+   * Creamos un observable del operador Tap
+   */
+  private methodTap(): void {
+    const clicks = fromEvent(document, 'click');
+    const positions = clicks.pipe(
+      tap(
+        (event) => (this.result += JSON.stringify(event) + '\n'),
+        (error) => (this.result += error + '\n'),
+        () => (this.result += 'Complete' + '\n')
+      )
+    );
+    this.subcription = positions.subscribe();
   }
 
   /**
