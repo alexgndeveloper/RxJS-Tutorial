@@ -22,5 +22,9 @@
   {
     "name": "tap",
     "info": "El operador Tap sirve para ejecutar acciones colaterales, en caso de a ver un error lo mostraria. Cuando hagamos click nos mostrara el evento."
+  },
+  {
+    "name": "share",
+    "info": "El operador Share sirve para ejecutar varias suscripciones a la vez. En este caso estamos ejecutando 4 suscripciones a la vez."
   }
 ]
