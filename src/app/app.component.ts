@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { timer, interval, Subscription, fromEvent, of, pipe } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { timer, interval, Subscription, fromEvent, of } from 'rxjs';
+import { filter, map, mapTo, share, tap } from 'rxjs/operators';
 
 import { TypeObservable } from './models/type-observable';
 
@@ -77,6 +77,9 @@ export class AppComponent implements OnInit {
       case 'tap':
         this.methodTap();
         break;
+      case 'share':
+        this.methodShare();
+        break;
       default:
         break;
     }
@@ -90,6 +93,24 @@ export class AppComponent implements OnInit {
     this.info = '';
     this.result = '';
     this.subcription.unsubscribe();
+  }
+
+  /**
+   * Creamos un observable del operador Share
+   */
+  private methodShare(): void {
+    const time = timer(1000);
+    const obs = time.pipe(
+      tap(() => (this.result += 'TAP ON\n')),
+      mapTo('END OBS\n')
+    );
+
+    const shareObs = obs.pipe(share());
+
+    this.subcription = shareObs.subscribe((val) => (this.result += val));
+    this.subcription = shareObs.subscribe((val) => (this.result += val));
+    this.subcription = shareObs.subscribe((val) => (this.result += val));
+    this.subcription = shareObs.subscribe((val) => (this.result += val));
   }
 
   /**
