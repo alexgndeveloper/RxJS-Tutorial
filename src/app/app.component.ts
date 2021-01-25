@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   /**
    * Titulo de la aplicacion
    */
-  public title = 'Tutorial-RxJS';
+  public title = 'Tutorial RxJS';
   /**
    * Informacion del Observable
    */
