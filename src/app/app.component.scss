@@ -26,10 +26,6 @@ a:hover {
   color: #9c0f77;
 }
 
-.spacer {
-  flex: 1;
-}
-
 .toolbar {
   position: absolute;
   top: 0;
@@ -39,9 +35,12 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #333333;
   color: white;
   font-weight: 600;
+  background-image: url("../assets/images/Fondo.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .content {
@@ -104,10 +103,6 @@ a:hover {
 .card-container .card:not(.highlight-card):hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 17px #f823bf;
-}
-
-.card-container .card:not(.highlight-card):hover .material-icons path {
-  fill: rgb(105, 103, 103);
 }
 
 .terminal {
