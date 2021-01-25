@@ -80,6 +80,9 @@ export class AppComponent implements OnInit {
       case 'share':
         this.methodShare();
         break;
+      case 'concat':
+        this.methodConcat();
+        break;
       default:
         break;
     }
@@ -94,6 +97,11 @@ export class AppComponent implements OnInit {
     this.result = '';
     this.subcription.unsubscribe();
   }
+
+  /**
+   * Creamos un observable del operador Concat
+   */
+  private methodConcat(): void {}
 
   /**
    * Creamos un observable del operador Share
