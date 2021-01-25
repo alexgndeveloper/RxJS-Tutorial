@@ -29,6 +29,6 @@
   },
   {
     "name": "concat",
-    "info": "El operador Concat."
+    "info": "El operador Concat, concatena varios Observables y los ejecuta consecutivamente. Primero vamos a ejecutar un interval hasta 4 y despues ejecutamos un range del 1 al 10."
   }
 ]

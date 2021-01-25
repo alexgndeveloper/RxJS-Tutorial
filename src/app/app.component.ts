@@ -1,7 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { timer, interval, Subscription, fromEvent, of } from 'rxjs';
-import { filter, map, mapTo, share, tap } from 'rxjs/operators';
+import {
+  timer,
+  interval,
+  Subscription,
+  fromEvent,
+  of,
+  range,
+  concat,
+} from 'rxjs';
+import { filter, map, mapTo, share, take, tap } from 'rxjs/operators';
 
 import { TypeObservable } from './models/type-observable';
 
@@ -101,7 +109,16 @@ export class AppComponent implements OnInit {
   /**
    * Creamos un observable del operador Concat
    */
-  private methodConcat(): void {}
+  private methodConcat(): void {
+    const time = interval(1000).pipe(take(4));
+    const rango = range(1, 10);
+
+    const result = concat(time, rango);
+
+    this.subcription = result.subscribe((x) => {
+      this.result += x + '\n';
+    });
+  }
 
   /**
    * Creamos un observable del operador Share
