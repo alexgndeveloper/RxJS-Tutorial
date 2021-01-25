@@ -8,6 +8,7 @@ import {
   of,
   range,
   concat,
+  Observable,
 } from 'rxjs';
 import { filter, map, mapTo, share, take, tap } from 'rxjs/operators';
 
@@ -39,6 +40,10 @@ export class AppComponent implements OnInit {
    * Muestra el boton de Desuscripcion
    */
   public showButtonUnsubcribe = false;
+  /**
+   * Muestra los botones de Error o Complete
+   */
+  public showButtonsErrorOrComplete = false;
 
   /**
    *  Suscripcion
@@ -91,6 +96,9 @@ export class AppComponent implements OnInit {
       case 'concat':
         this.methodConcat();
         break;
+      case 'nextErrorComplete':
+        this.showButtonsErrorOrComplete = true;
+        break;
       default:
         break;
     }
@@ -101,9 +109,49 @@ export class AppComponent implements OnInit {
    */
   public unsubcribe(): void {
     this.showButtonUnsubcribe = false;
+    this.showButtonsErrorOrComplete = false;
     this.info = '';
     this.result = '';
     this.subcription.unsubscribe();
+  }
+
+  /**
+   * Creamos un observable y vemos los estados de la suscripción
+   */
+  public methodNextErrorComplete(error: boolean): void {
+    this.result = '';
+    this.subcription.unsubscribe();
+
+    let myObservable: Observable<any>;
+
+    if (error) {
+      myObservable = new Observable((observer) => {
+        observer.next(1);
+        observer.next(2);
+        observer.next(3);
+        observer.error('ERROR TERRIBLE');
+        observer.complete();
+      });
+    } else {
+      myObservable = new Observable((observer) => {
+        observer.next(1);
+        observer.next(2);
+        observer.next(3);
+        observer.complete();
+      });
+    }
+
+    this.subcription = myObservable.subscribe({
+      next: (x) => {
+        this.result += `El siguiente valor es ${x}\n`;
+      },
+      error: (err) => {
+        this.result += `Error ---> ${err}`;
+      },
+      complete: () => {
+        this.result += 'Suscripción Completa';
+      },
+    });
   }
 
   /**

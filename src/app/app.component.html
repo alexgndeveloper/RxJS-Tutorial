@@ -12,7 +12,7 @@
 
 <!-- Container -->
 <div class="content" role="main">
-  <div class="card highlight-card card-small">
+  <div class="card highlight-card">
     <span>Observables</span>
   </div>
 
@@ -23,7 +23,7 @@
       tabindex="0"
       (click)="observableMethods(observable.name, observable.info)"
     >
-      <span>{{ observable.name }}</span>
+      <span>{{ observable.title }}</span>
     </div>
   </div>
 
@@ -35,6 +35,24 @@
   >
     Desuscribirse
   </button>
+
+  <div *ngIf="showButtonsErrorOrComplete">
+    <button
+      mat-raised-button
+      color="warn"
+      (click)="methodNextErrorComplete(true)"
+    >
+      Error
+    </button>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="methodNextErrorComplete(false)"
+    >
+      Complete
+    </button>
+  </div>
 
   <!-- Terminal -->
   <div class="terminal">
