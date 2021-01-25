@@ -26,5 +26,9 @@
   {
     "name": "share",
     "info": "El operador Share sirve para ejecutar varias suscripciones a la vez. En este caso estamos ejecutando 4 suscripciones a la vez."
+  },
+  {
+    "name": "concat",
+    "info": "El operador Concat, concatena varios Observables y los ejecuta consecutivamente. Primero vamos a ejecutar un interval hasta 4 y despues ejecutamos un range del 1 al 10."
   }
 ]
