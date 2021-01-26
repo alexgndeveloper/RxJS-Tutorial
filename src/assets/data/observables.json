@@ -1,34 +1,47 @@
 [
   {
     "name": "interval",
+    "title": "Interval",
     "info": "El operador interval se ejecuta cada vez hasta el infinito o nos desuscribamos, el perido de tiempo que le hayamos asignado en este caso 1 segundo (1000 milisegundos)"
   },
   {
     "name": "timer",
+    "title": "Timer",
     "info": "Este observable se ejecuta pasado el tiempo que le hemos asignado, en este caso 3 segundos."
   },
   {
     "name": "fromEvent",
+    "title": "FromEvent",
     "info": "Clickea en la pagina y te muestra las coordenadas, es muy parecido a un listening pero en observable."
   },
   {
     "name": "map",
+    "title": "Map",
     "info": "El operador Map aplica una función a cada valor, en este caso vamos a realizar una operacion matematica para mostrar el número al cuadrado de la lista 1,2,3,4,5."
   },
   {
     "name": "filter",
+    "title": "Filter",
     "info": "Filtramos los números pares de una lista con 1,2,3,4,5 y nos suscribimos para mostrarlos."
   },
   {
     "name": "tap",
+    "title": "Tap",
     "info": "El operador Tap sirve para ejecutar acciones colaterales, en caso de a ver un error lo mostraria. Cuando hagamos click nos mostrara el evento."
   },
   {
     "name": "share",
+    "title": "Share",
     "info": "El operador Share sirve para ejecutar varias suscripciones a la vez. En este caso estamos ejecutando 4 suscripciones a la vez."
   },
   {
     "name": "concat",
+    "title": "Concat",
     "info": "El operador Concat, concatena varios Observables y los ejecuta consecutivamente. Primero vamos a ejecutar un interval hasta 4 y despues ejecutamos un range del 1 al 10."
+  },
+  {
+    "name": "nextErrorComplete",
+    "title": "Next Error Complete",
+    "info": "Vamos a ver como funciona una suscripción. Next, Error y Complete."
   }
 ]

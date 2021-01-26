@@ -26,6 +26,10 @@ a:hover {
   color: #9c0f77;
 }
 
+.mat-button-base{
+  margin-left: 5px;
+}
+
 .toolbar {
   position: absolute;
   top: 0;
@@ -94,6 +98,7 @@ a:hover {
 .card.card-small {
   height: 16px;
   width: 168px;
+  min-width: max-content;
 }
 
 .card-container .card:not(.highlight-card) {
@@ -156,5 +161,5 @@ svg#clouds {
   bottom: -160px;
   left: -230px;
   z-index: -10;
-  width: 1920px;
+  width: max-content;
 }
