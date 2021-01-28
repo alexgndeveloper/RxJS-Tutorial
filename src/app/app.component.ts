@@ -10,7 +10,7 @@ import {
   concat,
   Observable,
 } from 'rxjs';
-import { filter, map, mapTo, share, take, tap } from 'rxjs/operators';
+import { bufferTime, filter, map, mapTo, share, take, tap } from 'rxjs/operators';
 
 import { TypeObservable } from './models/type-observable';
 
@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
    */
   private subcription: Subscription = new Subscription();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     // Cargar los observables
@@ -98,6 +98,9 @@ export class AppComponent implements OnInit {
         break;
       case 'nextErrorComplete':
         this.showButtonsErrorOrComplete = true;
+        break;
+      case 'bufferTime':
+        this.methodBufferTime();
         break;
       default:
         break;
@@ -151,6 +154,19 @@ export class AppComponent implements OnInit {
       complete: () => {
         this.result += 'Suscripción Completa';
       },
+    });
+  }
+
+  /**
+   * Creamos un observable del operador BufferTime
+   */
+  private methodBufferTime(): void {
+    this.showButtonUnsubcribe = true;
+
+    const time = interval(500);
+    const buffer = time.pipe(bufferTime(2000));
+    this.subcription = buffer.subscribe(val => {
+      this.result += `Buffer: ${val}\n`;
     });
   }
 
