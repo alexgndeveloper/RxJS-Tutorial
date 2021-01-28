@@ -43,5 +43,10 @@
     "name": "nextErrorComplete",
     "title": "Next Error Complete",
     "info": "Vamos a ver como funciona una suscripción. Next, Error y Complete."
+  },
+  {
+    "name": "bufferTime",
+    "title": "BufferTime",
+    "info": "El operador BufferTime, almacena durante el tiempo en milisegundos que le pasemos como parametro el observable con el que le llamamos. En este caso en interval de medio segundo que devulve un valor númerico, entonces el interval se ejecuta cada medio segundo y el bufferTimer cada 2 segundos mostrando el interval."
   }
 ]
