@@ -178,7 +178,7 @@ export class AppComponent implements OnInit {
     const fork = forkJoin({
       google: ajax.getJSON('https://api.github.com/users/google'),
       microsoft: ajax.getJSON('https://api.github.com/users/microsoft'),
-      alexgndeveloper: ajax.getJSON('https://api.github.com/users/alexgndeveloper').pipe(delay(2000))
+      alexgndeveloper: ajax.getJSON('https://api.github.com/users/alexgndeveloper')
     });
 
     this.subcription = fork.subscribe((res) => {
@@ -188,8 +188,6 @@ export class AppComponent implements OnInit {
 
       this.loading = false;
     });
-
-
   }
 
   /**
@@ -242,10 +240,10 @@ export class AppComponent implements OnInit {
 
     const shareObs = obs.pipe(share());
 
-    this.subcription = shareObs.subscribe((val) => (this.result += val));
-    this.subcription = shareObs.subscribe((val) => (this.result += val));
-    this.subcription = shareObs.subscribe((val) => (this.result += val));
-    this.subcription = shareObs.subscribe((val) => (this.result += val));
+    this.subcription = shareObs.subscribe((val) => { this.result += val; });
+    this.subcription = shareObs.subscribe((val) => { this.result += val; });
+    this.subcription = shareObs.subscribe((val) => { this.result += val; });
+    this.subcription = shareObs.subscribe((val) => { this.result += val; });
   }
 
   /**

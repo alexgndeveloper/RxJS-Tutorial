@@ -26,7 +26,12 @@ a:hover {
   color: #9c0f77;
 }
 
-.mat-button-base{
+:host ::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+  stroke: #b7178c;
+}
+
+.mat-button-base {
   margin-left: 5px;
 }
 
