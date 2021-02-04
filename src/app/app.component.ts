@@ -10,7 +10,7 @@ import {
   concat,
   Observable,
 } from 'rxjs';
-import { bufferTime, filter, map, mapTo, share, take, tap } from 'rxjs/operators';
+import { bufferTime, filter, map, mapTo, share, switchMap, take, tap } from 'rxjs/operators';
 
 import { TypeObservable } from './models/type-observable';
 
@@ -102,6 +102,9 @@ export class AppComponent implements OnInit {
       case 'bufferTime':
         this.methodBufferTime();
         break;
+      case 'switchMap':
+        this.methodSwitchMap();
+        break;
       default:
         break;
     }
@@ -154,6 +157,17 @@ export class AppComponent implements OnInit {
       complete: () => {
         this.result += 'Suscripción Completa';
       },
+    });
+  }
+
+  /**
+   * Creamos un observable del operador SwitchMap
+   */
+  private methodSwitchMap(): void {
+    this.showButtonUnsubcribe = true;
+
+    this.subcription = fromEvent(document, 'click').pipe(switchMap(() => interval(1000))).subscribe((res) => {
+      this.result += res + '\n';
     });
   }
 
