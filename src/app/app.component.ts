@@ -9,8 +9,10 @@ import {
   range,
   concat,
   Observable,
+  forkJoin
 } from 'rxjs';
-import { bufferTime, filter, map, mapTo, share, switchMap, take, tap } from 'rxjs/operators';
+import { ajax } from 'rxjs/ajax';
+import { bufferTime, delay, filter, map, mapTo, share, switchMap, take, tap } from 'rxjs/operators';
 
 import { TypeObservable } from './models/type-observable';
 
@@ -44,6 +46,10 @@ export class AppComponent implements OnInit {
    * Muestra los botones de Error o Complete
    */
   public showButtonsErrorOrComplete = false;
+  /**
+   * Cargando muestra o no la terminal
+   */
+  public loading = false;
 
   /**
    *  Suscripcion
@@ -105,6 +111,9 @@ export class AppComponent implements OnInit {
       case 'switchMap':
         this.methodSwitchMap();
         break;
+      case 'forkJoin':
+        this.methodForkJoin();
+        break;
       default:
         break;
     }
@@ -158,6 +167,29 @@ export class AppComponent implements OnInit {
         this.result += 'Suscripción Completa';
       },
     });
+  }
+
+  /**
+   * Creamos un observable del operador ForkJoin
+   */
+  private methodForkJoin(): void {
+    this.loading = true;
+
+    const fork = forkJoin({
+      google: ajax.getJSON('https://api.github.com/users/google'),
+      microsoft: ajax.getJSON('https://api.github.com/users/microsoft'),
+      alexgndeveloper: ajax.getJSON('https://api.github.com/users/alexgndeveloper').pipe(delay(2000))
+    });
+
+    this.subcription = fork.subscribe((res) => {
+      this.result += `${JSON.stringify(res.google)}\n`;
+      this.result += `${JSON.stringify(res.microsoft)}\n`;
+      this.result += `${JSON.stringify(res.alexgndeveloper)}\n`;
+
+      this.loading = false;
+    });
+
+
   }
 
   /**
