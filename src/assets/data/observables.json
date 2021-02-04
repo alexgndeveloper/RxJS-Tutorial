@@ -48,5 +48,10 @@
     "name": "bufferTime",
     "title": "BufferTime",
     "info": "El operador BufferTime, almacena durante el tiempo en milisegundos que le pasemos como parametro el observable con el que le llamamos. En este caso en interval de medio segundo que devulve un valor númerico, entonces el interval se ejecuta cada medio segundo y el bufferTimer cada 2 segundos mostrando el interval."
+  },
+  {
+    "name": "switchMap",
+    "title": "SwitchMap",
+    "info": "El operador SwitchMap, cuando clickemos en la pagina va a volver empezar el observable y cuando volvamos a hacer click vuelve a empezar otra vez."
   }
 ]
