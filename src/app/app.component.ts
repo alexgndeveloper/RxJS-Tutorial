@@ -12,7 +12,7 @@ import {
   forkJoin
 } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { bufferTime, delay, filter, map, mapTo, share, switchMap, take, tap } from 'rxjs/operators';
+import { bufferTime, concatMap, delay, filter, map, mapTo, share, switchMap, take, tap } from 'rxjs/operators';
 
 import { TypeObservable } from './models/type-observable';
 
@@ -114,6 +114,9 @@ export class AppComponent implements OnInit {
       case 'forkJoin':
         this.methodForkJoin();
         break;
+      case 'concatMap':
+        this.methodConcatMap();
+        break;
       default:
         break;
     }
@@ -166,6 +169,18 @@ export class AppComponent implements OnInit {
       complete: () => {
         this.result += 'Suscripción Completa';
       },
+    });
+  }
+
+  private methodConcatMap(): void {
+    const source = of(2000, 1000, 3000);
+
+    const obsConcatMap = source.pipe(
+      concatMap((v) => of(`Valor: ${v}`).pipe(delay(v)))
+    );
+
+    this.subcription = obsConcatMap.subscribe((res) => {
+      this.result += `${res}\n`;
     });
   }
 

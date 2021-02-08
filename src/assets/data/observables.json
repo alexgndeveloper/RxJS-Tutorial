@@ -58,5 +58,10 @@
     "name": "forkJoin",
     "title": "ForkJoin",
     "info": "El operador ForkJoin, es un operador de convinacion y nos permite fusionarlas. Une todas las observables y lo ejecuta cuando todas las observables han terminado y en orden."
+  },
+  {
+    "name": "concatMap",
+    "title": "ConcatMap",
+    "info": "El operador ConcatMap, vamos a recibir un of con tres valores 2000, 1000 y 3000 que se van a ejecutar en ese orden y en ese tiempo, la diferencia con Concat es que Concat concatena observables y ConcatMap concatena los datos de un observable y los procesa uno a uno."
   }
 ]
