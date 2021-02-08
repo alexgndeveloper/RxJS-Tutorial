@@ -55,9 +55,10 @@
   </div>
 
   <!-- Terminal -->
-  <div class="terminal">
+  <div class="terminal" >
     <p>{{ info }}</p>
-    <pre>{{ result }}</pre>
+    <pre *ngIf="!loading">{{ result }}</pre>
+    <mat-spinner class="m-3" diameter="30" *ngIf="loading"></mat-spinner>
   </div>
 
   <footer>

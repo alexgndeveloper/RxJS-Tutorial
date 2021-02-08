@@ -53,5 +53,10 @@
     "name": "switchMap",
     "title": "SwitchMap",
     "info": "El operador SwitchMap, cuando clickemos en la pagina va a volver empezar el observable y cuando volvamos a hacer click vuelve a empezar otra vez."
+  },
+  {
+    "name": "forkJoin",
+    "title": "ForkJoin",
+    "info": "El operador ForkJoin, es un operador de convinacion y nos permite fusionarlas. Une todas las observables y lo ejecuta cuando todas las observables han terminado y en orden."
   }
 ]
