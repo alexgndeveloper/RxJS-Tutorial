@@ -11,8 +11,7 @@ import {
   Observable,
   forkJoin
 } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
-import { bufferTime, concatMap, delay, filter, map, mapTo, share, switchMap, take, tap } from 'rxjs/operators';
+import { bufferTime, concatMap, delay, filter, map, mapTo, mergeMap, share, switchMap, take, tap } from 'rxjs/operators';
 
 import { TypeObservable } from './models/type-observable';
 
@@ -117,6 +116,9 @@ export class AppComponent implements OnInit {
       case 'concatMap':
         this.methodConcatMap();
         break;
+      case 'mergeMap':
+        this.methodMergeMap();
+        break;
       default:
         break;
     }
@@ -172,6 +174,30 @@ export class AppComponent implements OnInit {
     });
   }
 
+  /**
+   * Creamos un observable del operador MergeMap
+   */
+  private methodMergeMap(): void {
+    this.loading = true;
+    const source = of(
+      this.http.get('https://api.github.com/users/google'),
+      this.http.get('https://api.github.com/users/microsoft'),
+      this.http.get('https://api.github.com/users/alexgndeveloper')
+    );
+
+    const obsMergeMap = source.pipe(
+      mergeMap((v) => v)
+    );
+
+    this.subcription = obsMergeMap.subscribe((res) => {
+      this.result += `${JSON.stringify(res)}\n`;
+      this.loading = false;
+    });
+  }
+
+  /**
+   * Creamos un observable del operador ConcatMap
+   */
   private methodConcatMap(): void {
     const source = of(2000, 1000, 3000);
 
@@ -191,9 +217,9 @@ export class AppComponent implements OnInit {
     this.loading = true;
 
     const fork = forkJoin({
-      google: ajax.getJSON('https://api.github.com/users/google'),
-      microsoft: ajax.getJSON('https://api.github.com/users/microsoft'),
-      alexgndeveloper: ajax.getJSON('https://api.github.com/users/alexgndeveloper')
+      google: this.http.get('https://api.github.com/users/google'),
+      microsoft: this.http.get('https://api.github.com/users/microsoft'),
+      alexgndeveloper: this.http.get('https://api.github.com/users/alexgndeveloper')
     });
 
     this.subcription = fork.subscribe((res) => {
