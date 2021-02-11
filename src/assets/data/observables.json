@@ -68,5 +68,10 @@
     "name": "mergeMap",
     "title": "MergeMap",
     "info": "El operador MergeMap, es muy parecido a ConcatMap solo que MergeMap no los devuelve en orden si no cuando se emitan. Vamos a obtener los datos de varias llamadas a la API y nos lo va a devolver segun los vaya obteniendo."
+  },
+  {
+    "name": "scan",
+    "title": "Scan",
+    "info": "El operador Scan."
   }
 ]
