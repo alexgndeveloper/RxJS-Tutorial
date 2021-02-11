@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import {
   timer,
   interval,
@@ -11,8 +11,7 @@ import {
   Observable,
   forkJoin
 } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
-import { bufferTime, delay, filter, map, mapTo, share, switchMap, take, tap } from 'rxjs/operators';
+import { bufferTime, concatMap, delay, filter, map, mapTo, mergeMap, share, switchMap, take, tap } from 'rxjs/operators';
 
 import { TypeObservable } from './models/type-observable';
 
@@ -51,6 +50,8 @@ export class AppComponent implements OnInit {
    */
   public loading = false;
 
+  public imageCode = '';
+
   /**
    *  Suscripcion
    */
@@ -68,6 +69,29 @@ export class AppComponent implements OnInit {
   }
 
   /**
+   * HTTP GET a la API con la url que le pasamos como parametro. Devuelve un Observable
+   * @param url Url de la API
+   */
+  public getClient(url: string): Observable<any> {
+    const gh$ = this.http.get(url);
+
+    const data$ = new Observable(obs => {
+      gh$.subscribe(
+        (res) => {
+          obs.next(res);
+          obs.complete();
+        },
+        (err: HttpErrorResponse) => {
+          obs.error(err);
+          alert(err.message);
+        }
+      );
+    });
+
+    return data$;
+  }
+
+  /**
    * Metodo para llamar a los diferentes metodos de los Observables
    * y mostrar su informacion
    * @param method Nombre del metodo
@@ -76,6 +100,7 @@ export class AppComponent implements OnInit {
   public observableMethods(method: string, info: string): void {
     this.unsubcribe();
     this.info = info;
+    this.imageCode = `assets/images/${method}.png`;
 
     switch (method) {
       case 'interval':
@@ -113,6 +138,15 @@ export class AppComponent implements OnInit {
         break;
       case 'forkJoin':
         this.methodForkJoin();
+        break;
+      case 'concatMap':
+        this.methodConcatMap();
+        break;
+      case 'mergeMap':
+        this.methodMergeMap();
+        break;
+      case 'scan':
+        this.methodScan();
         break;
       default:
         break;
@@ -170,15 +204,60 @@ export class AppComponent implements OnInit {
   }
 
   /**
+   * Creamos un observable del operador Scan
+   */
+  private methodScan(): void {
+
+  }
+
+  /**
+   * Creamos un observable del operador MergeMap
+   */
+  private methodMergeMap(): void {
+    this.loading = true;
+
+    const source = of(
+      this.getClient('https://api.github.com/users/google'),
+      this.getClient('https://api.github.com/users/microsoft'),
+      this.getClient('https://api.github.com/users/alexgndeveloper'),
+    );
+
+    const obsMergeMap = source.pipe(
+      mergeMap((v) => v)
+    );
+
+    this.subcription = obsMergeMap.subscribe((res) => {
+      this.result += `${JSON.stringify(res)}\n`;
+
+      this.loading = false;
+    });
+  }
+
+  /**
+   * Creamos un observable del operador ConcatMap
+   */
+  private methodConcatMap(): void {
+    const source = of(2000, 1000, 3000);
+
+    const obsConcatMap = source.pipe(
+      concatMap((v) => of(`Valor: ${v}`).pipe(delay(v)))
+    );
+
+    this.subcription = obsConcatMap.subscribe((res) => {
+      this.result += `${res}\n`;
+    });
+  }
+
+  /**
    * Creamos un observable del operador ForkJoin
    */
   private methodForkJoin(): void {
     this.loading = true;
 
     const fork = forkJoin({
-      google: ajax.getJSON('https://api.github.com/users/google'),
-      microsoft: ajax.getJSON('https://api.github.com/users/microsoft'),
-      alexgndeveloper: ajax.getJSON('https://api.github.com/users/alexgndeveloper')
+      google: this.getClient('https://api.github.com/users/google'),
+      microsoft: this.getClient('https://api.github.com/users/microsoft'),
+      alexgndeveloper: this.getClient('https://api.github.com/users/alexgndeveloper')
     });
 
     this.subcription = fork.subscribe((res) => {
@@ -196,9 +275,10 @@ export class AppComponent implements OnInit {
   private methodSwitchMap(): void {
     this.showButtonUnsubcribe = true;
 
-    this.subcription = fromEvent(document, 'click').pipe(switchMap(() => interval(1000))).subscribe((res) => {
-      this.result += res + '\n';
-    });
+    this.subcription = fromEvent(document, 'click').pipe(
+      switchMap(() => interval(1000))).subscribe((res) => {
+        this.result += res + '\n';
+      });
   }
 
   /**
@@ -313,4 +393,5 @@ export class AppComponent implements OnInit {
       this.result += `Cada ${n} segundos \n`;
     });
   }
+
 }
