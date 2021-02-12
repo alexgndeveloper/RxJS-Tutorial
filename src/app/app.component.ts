@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Meta, Title } from '@angular/platform-browser';
 import {
   timer,
   interval,
@@ -49,15 +50,29 @@ export class AppComponent implements OnInit {
    * Cargando muestra o no la terminal
    */
   public loading = false;
-
-  public imageCode = '';
+  /**
+   * Ruta de la Imagen de Codigo
+   */
+  public urlImageCode = '';
 
   /**
    *  Suscripcion
    */
   private subcription: Subscription = new Subscription();
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private titleService: Title,
+    private metaService: Meta,
+    private http: HttpClient
+  ) {
+    // Titulo de la aplicacion
+    this.titleService.setTitle(this.title);
+    this.metaService.addTags([
+      { name: 'keywords', content: 'Angular, RXJS, Tutorial' },
+      { name: 'description', content: 'Tutorial Angular RXJS' },
+      { name: 'robots', content: 'index, follow' }
+    ]);
+  }
 
   ngOnInit(): void {
     // Cargar los observables
@@ -100,7 +115,7 @@ export class AppComponent implements OnInit {
   public observableMethods(method: string, info: string): void {
     this.unsubcribe();
     this.info = info;
-    this.imageCode = `assets/images/${method}.png`;
+    this.urlImageCode = `assets/images/${method}.png`;
 
     switch (method) {
       case 'interval':
@@ -161,6 +176,7 @@ export class AppComponent implements OnInit {
     this.showButtonsErrorOrComplete = false;
     this.info = '';
     this.result = '';
+    this.urlImageCode = '';
     this.subcription.unsubscribe();
   }
 
