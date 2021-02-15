@@ -12,7 +12,7 @@ import {
   Observable,
   forkJoin
 } from 'rxjs';
-import { bufferTime, concatMap, delay, filter, map, mapTo, mergeMap, share, switchMap, take, tap } from 'rxjs/operators';
+import { bufferTime, concatMap, delay, filter, map, mapTo, mergeMap, scan, share, switchMap, take, tap } from 'rxjs/operators';
 
 import { TypeObservable } from './models/type-observable';
 
@@ -223,7 +223,13 @@ export class AppComponent implements OnInit {
    * Creamos un observable del operador Scan
    */
   private methodScan(): void {
+    const src = of(1, 2, 3, 4, 5);
 
+    const scanObs = src.pipe(scan((a, c) => a + c, 0));
+
+    this.subcription = scanObs.subscribe((res) => {
+      this.result += `${res}\n`;
+    });
   }
 
   /**

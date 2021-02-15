@@ -72,6 +72,6 @@
   {
     "name": "scan",
     "title": "Scan",
-    "info": "El operador Scan."
+    "info": "El operador Scan, es un observable en el que podemos realizar comprobaciones o lo que necesitemos con los valores recibidos. En este caso sumaremos el primer valor con el segundo, los valores son: 1, 2, 3, 4 y 5."
   }
 ]
