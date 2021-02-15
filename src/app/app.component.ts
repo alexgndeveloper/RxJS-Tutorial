@@ -10,7 +10,8 @@ import {
   range,
   concat,
   Observable,
-  forkJoin
+  forkJoin,
+  Subject
 } from 'rxjs';
 import { bufferTime, concatMap, delay, filter, map, mapTo, mergeMap, scan, share, switchMap, take, tap } from 'rxjs/operators';
 
@@ -163,6 +164,9 @@ export class AppComponent implements OnInit {
       case 'scan':
         this.methodScan();
         break;
+      case 'subject':
+        this.methodSubject();
+        break;
       default:
         break;
     }
@@ -217,6 +221,23 @@ export class AppComponent implements OnInit {
         this.result += 'Suscripción Completa';
       },
     });
+  }
+
+  /**
+   * Creamos un observable del operador Subject
+   */
+  private methodSubject(): void {
+    const subject = new Subject<number>();
+
+    subject.subscribe({
+      next: (n) => this.result += `ObsA: ${n}\n`
+    });
+    subject.subscribe({
+      next: (n) => this.result += `ObsB: ${n + 100}\n`
+    });
+
+    subject.next(1);
+    subject.next(2);
   }
 
   /**
