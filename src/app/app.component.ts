@@ -13,7 +13,8 @@ import {
   forkJoin,
   Subject,
   from,
-  ConnectableObservable
+  ConnectableObservable,
+  ReplaySubject
 } from 'rxjs';
 import { bufferTime, concatMap, delay, filter, map, mapTo, mergeMap, multicast, scan, share, switchMap, take, tap } from 'rxjs/operators';
 
@@ -172,6 +173,9 @@ export class AppComponent implements OnInit {
       case 'multicast':
         this.methodMulticastSubject();
         break;
+      case 'replaySubject':
+        this.methodReplaySubject();
+        break;
       default:
         break;
     }
@@ -226,6 +230,21 @@ export class AppComponent implements OnInit {
         this.result += 'Suscripción Completa';
       },
     });
+  }
+
+  /**
+   * Creamos un observable del operador ReplaySubject
+   */
+  private methodReplaySubject(): void {
+    const obs = new ReplaySubject(1); // Numero de buffer
+
+    obs.next(1);
+    obs.next(2);
+    obs.next(3);
+    obs.subscribe(res => console.log('Suscripcion: 1', res));
+    obs.next(4);
+    obs.next(5);
+    obs.subscribe(res => console.log('Suscripcion: 2', res));
   }
 
   /**

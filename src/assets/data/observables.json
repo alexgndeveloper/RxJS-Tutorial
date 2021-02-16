@@ -83,5 +83,10 @@
     "name": "multicast",
     "title": "Multicast en Subject",
     "info": "El operador Multicast, nos sirve para poder ejecutar varias suscripciones a la vez. En este caso vamos a obtener un ID y lo vamos a utilizar en las dos suscripciones, el Id que recibimos y en la otra ese Id menos 1. Hemos realizado una comprobacion de si el Id es 0 no muestre el negativo."
+  },
+  {
+    "name": "replaySubject",
+    "title": "ReplaySubject",
+    "info": "Replay Subject funciona de la misma forma que Behaviour Subject, pero así como Behaviour Subject solo tiene la habilidad de recordar el último valor emitido, con Replay Subject vamos a poder configurar el número de valores que queremos recordar a las nuevas subscripciones."
   }
 ]
