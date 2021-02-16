@@ -78,5 +78,10 @@
     "name": "subject",
     "title": "Subject",
     "info": "El operador Subject, es un observable que puede tener multiples suscripciones. En este caso nos vamos a subcribir a dos suscripciones, una que nos muestre el valor y otra el valor + 100. Lo vamos a llamar dos veces con los valores de 1 y 2."
+  },
+  {
+    "name": "multicast",
+    "title": "Multicast en Subject",
+    "info": "El operador Multicast, nos sirve para poder ejecutar varias suscripciones a la vez. En este caso vamos a obtener un ID y lo vamos a utilizar en las dos suscripciones, el Id que recibimos y en la otra ese Id menos 1. Hemos realizado una comprobacion de si el Id es 0 no muestre el negativo."
   }
 ]

@@ -11,9 +11,11 @@ import {
   concat,
   Observable,
   forkJoin,
-  Subject
+  Subject,
+  from,
+  ConnectableObservable
 } from 'rxjs';
-import { bufferTime, concatMap, delay, filter, map, mapTo, mergeMap, scan, share, switchMap, take, tap } from 'rxjs/operators';
+import { bufferTime, concatMap, delay, filter, map, mapTo, mergeMap, multicast, scan, share, switchMap, take, tap } from 'rxjs/operators';
 
 import { TypeObservable } from './models/type-observable';
 
@@ -167,6 +169,9 @@ export class AppComponent implements OnInit {
       case 'subject':
         this.methodSubject();
         break;
+      case 'multicast':
+        this.methodMulticastSubject();
+        break;
       default:
         break;
     }
@@ -221,6 +226,30 @@ export class AppComponent implements OnInit {
         this.result += 'Suscripción Completa';
       },
     });
+  }
+
+  /**
+   * Creamos un observable del operador Multicast en Subject
+   */
+  private methodMulticastSubject(): void {
+    this.showButtonUnsubcribe = true;
+
+    const source = interval(3000).pipe(
+      tap((n) => this.result += `ID: ${n}\n`)
+    );
+
+    const subject = new Subject();
+
+    const multi = source.pipe(multicast(subject)) as ConnectableObservable<any>;
+
+    multi.subscribe(v => this.result += `localhost:4200/${v}\n`);
+    multi.subscribe(v => {
+      if (v !== 0) {
+        this.result += `localhost:4200/${(v - 1)}\n`;
+      }
+    });
+
+    this.subcription = multi.connect();
   }
 
   /**
