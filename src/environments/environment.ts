@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  dataFirebase: 'https://rxjs-tutorial-413f7-default-rtdb.firebaseio.com/',
+  apiGitHub: 'https://api.github.com/'
 };
 
 /*
