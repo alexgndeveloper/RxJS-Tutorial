@@ -81,7 +81,7 @@
   },
   {
     "name": "multicast",
-    "title": "Multicast en Subject",
+    "title": "Multicast Subject",
     "info": "El operador Multicast, nos sirve para poder ejecutar varias suscripciones a la vez. En este caso vamos a obtener un ID y lo vamos a utilizar en las dos suscripciones, el Id que recibimos y en la otra ese Id menos 1. Hemos realizado una comprobacion de si el Id es 0 no muestre el negativo."
   },
   {

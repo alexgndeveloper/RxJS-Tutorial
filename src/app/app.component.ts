@@ -244,8 +244,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  @ViewChild('search', { static: false }) search: any;
-
   /**
    * Creamos un observable del operador DebounceTime
    */
