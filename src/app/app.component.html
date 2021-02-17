@@ -12,9 +12,13 @@
   </div>
 
   <div class="card-container">
-    <div *ngFor="let observable of observables" class="card card-small" tabindex="0"
-      (click)="observableMethods(observable.name, observable.info)">
-      <span>{{ observable.title }}</span>
+    <mat-spinner class="m-3" *ngIf="loadingObservables"></mat-spinner>
+
+    <div class="row">
+      <div *ngFor="let observable of observables" class="col card card-small" tabindex="0"
+        (click)="observableMethods(observable)">
+        <span>{{ observable.title }}</span>
+      </div>
     </div>
   </div>
 
@@ -36,13 +40,11 @@
     </button>
   </div>
 
-  <input #search id="search" type="text" *ngIf="showInput">
-
   <!-- Terminal -->
   <div class="terminal">
     <p>{{ info }}</p>
-    <pre *ngIf="!loading">{{ result }}</pre>
-    <mat-spinner class="m-3" diameter="30" *ngIf="loading"></mat-spinner>
+    <pre *ngIf="!loadingTerminal">{{ result }}</pre>
+    <mat-spinner class="m-3" diameter="30" *ngIf="loadingTerminal"></mat-spinner>
   </div>
 
   <footer>

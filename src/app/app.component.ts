@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Meta, Title } from '@angular/platform-browser';
 import {
@@ -20,6 +20,7 @@ import {
 import { bufferTime, concatMap, debounceTime, delay, filter, map, mapTo, mergeMap, multicast, scan, share, switchMap, take, tap } from 'rxjs/operators';
 
 import { TypeObservable } from './models/type-observable';
+import { WebpathService } from './services/webpath.service';
 
 @Component({
   selector: 'app-root',
@@ -56,14 +57,17 @@ export class AppComponent implements OnInit {
    */
   public showInput = false;
   /**
-   * Cargando muestra o no la terminal
+   * Cargando Observables
    */
-  public loading = false;
+  public loadingObservables = false;
+  /**
+   * Cargando terminal
+   */
+  public loadingTerminal = false;
   /**
    * Ruta de la Imagen de Codigo
    */
   public urlImageCode = '';
-
   /**
    *  Suscripcion
    */
@@ -85,11 +89,11 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     // Cargar los observables
-    this.http
-      .get<TypeObservable[]>('assets/data/observables.json')
-      .subscribe((res: TypeObservable[]) => {
-        this.observables = res;
-      });
+    this.loadingObservables = true;
+    this.getClient(WebpathService.OBSERVABLES).subscribe((res: TypeObservable[]) => {
+      this.observables = res;
+      this.loadingObservables = false;
+    });
   }
 
   /**
@@ -118,15 +122,14 @@ export class AppComponent implements OnInit {
   /**
    * Metodo para llamar a los diferentes metodos de los Observables
    * y mostrar su informacion
-   * @param method Nombre del metodo
-   * @param info Informacion del observable
+   * @param observable Observable
    */
-  public observableMethods(method: string, info: string): void {
+  public observableMethods(observable: TypeObservable): void {
     this.unsubcribe();
-    this.info = info;
-    this.urlImageCode = `assets/images/${method}.png`;
+    this.info = observable.info;
+    this.urlImageCode = observable.urlImage;
 
-    switch (method) {
+    switch (observable.name) {
       case 'interval':
         this.methodInterval();
         break;
@@ -351,12 +354,12 @@ export class AppComponent implements OnInit {
    * Creamos un observable del operador MergeMap
    */
   private methodMergeMap(): void {
-    this.loading = true;
+    this.loadingTerminal = true;
 
     const source = of(
-      this.getClient('https://api.github.com/users/google'),
-      this.getClient('https://api.github.com/users/microsoft'),
-      this.getClient('https://api.github.com/users/alexgndeveloper'),
+      this.getClient(WebpathService.USERS_GOOGLE),
+      this.getClient(WebpathService.USERS_MICROSOFT),
+      this.getClient(WebpathService.USERS_ALEXGNDEVELOPER),
     );
 
     const obsMergeMap = source.pipe(
@@ -366,7 +369,7 @@ export class AppComponent implements OnInit {
     this.subcription = obsMergeMap.subscribe((res) => {
       this.result += `${JSON.stringify(res)}\n`;
 
-      this.loading = false;
+      this.loadingTerminal = false;
     });
   }
 
@@ -389,12 +392,12 @@ export class AppComponent implements OnInit {
    * Creamos un observable del operador ForkJoin
    */
   private methodForkJoin(): void {
-    this.loading = true;
+    this.loadingTerminal = true;
 
     const fork = forkJoin({
-      google: this.getClient('https://api.github.com/users/google'),
-      microsoft: this.getClient('https://api.github.com/users/microsoft'),
-      alexgndeveloper: this.getClient('https://api.github.com/users/alexgndeveloper')
+      google: this.getClient(WebpathService.USERS_GOOGLE),
+      microsoft: this.getClient(WebpathService.USERS_MICROSOFT),
+      alexgndeveloper: this.getClient(WebpathService.USERS_ALEXGNDEVELOPER)
     });
 
     this.subcription = fork.subscribe((res) => {
@@ -402,7 +405,7 @@ export class AppComponent implements OnInit {
       this.result += `${JSON.stringify(res.microsoft)}\n`;
       this.result += `${JSON.stringify(res.alexgndeveloper)}\n`;
 
-      this.loading = false;
+      this.loadingTerminal = false;
     });
   }
 
