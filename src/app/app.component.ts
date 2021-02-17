@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Meta, Title } from '@angular/platform-browser';
 import {
@@ -17,7 +17,7 @@ import {
   BehaviorSubject,
   merge
 } from 'rxjs';
-import { bufferTime, concatMap, delay, filter, map, mapTo, mergeMap, multicast, scan, share, switchMap, take, tap } from 'rxjs/operators';
+import { bufferTime, concatMap, debounceTime, delay, filter, map, mapTo, mergeMap, multicast, scan, share, switchMap, take, tap } from 'rxjs/operators';
 
 import { TypeObservable } from './models/type-observable';
 
@@ -51,6 +51,10 @@ export class AppComponent implements OnInit {
    * Muestra los botones de Error o Complete
    */
   public showButtonsErrorOrComplete = false;
+  /**
+   * Muestra los botones de Error o Complete
+   */
+  public showInput = false;
   /**
    * Cargando muestra o no la terminal
    */
@@ -180,6 +184,9 @@ export class AppComponent implements OnInit {
       case 'replaySubject':
         this.methodReplaySubject();
         break;
+      case 'debounceTime':
+        this.methodDebounceTime();
+        break;
       default:
         break;
     }
@@ -191,6 +198,7 @@ export class AppComponent implements OnInit {
   public unsubcribe(): void {
     this.showButtonUnsubcribe = false;
     this.showButtonsErrorOrComplete = false;
+    this.showInput = false;
     this.info = '';
     this.result = '';
     this.urlImageCode = '';
@@ -234,6 +242,20 @@ export class AppComponent implements OnInit {
         this.result += 'Suscripción Completa';
       },
     });
+  }
+
+  @ViewChild('search', { static: false }) search: any;
+
+  /**
+   * Creamos un observable del operador DebounceTime
+   */
+  private methodDebounceTime(): void {
+    const keyup = fromEvent(document, 'click');
+
+    this.subcription = keyup.pipe(
+      map((e: any) => e.clientX),
+      debounceTime(1000)
+    ).subscribe(res => this.result += `Posición x:${res}\n`);
   }
 
   /**
