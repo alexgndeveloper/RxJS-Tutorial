@@ -81,7 +81,7 @@
   },
   {
     "name": "multicast",
-    "title": "Multicast en Subject",
+    "title": "Multicast Subject",
     "info": "El operador Multicast, nos sirve para poder ejecutar varias suscripciones a la vez. En este caso vamos a obtener un ID y lo vamos a utilizar en las dos suscripciones, el Id que recibimos y en la otra ese Id menos 1. Hemos realizado una comprobacion de si el Id es 0 no muestre el negativo."
   },
   {
@@ -93,5 +93,10 @@
     "name": "replaySubject",
     "title": "ReplaySubject",
     "info": "Replay Subject funciona de la misma forma que Behaviour Subject, pero así como Behaviour Subject solo tiene la habilidad de recordar el último valor emitido, con Replay Subject vamos a poder configurar el número de valores que queremos recordar a las nuevas subscripciones. En este caso vamos a ejecutar un interval que nos va a ir diciendo los segundos y un Click que nos dice donde hemos clickado. Es muy interesate por ejemplo para hacer un mapa de calor."
+  },
+  {
+    "name": "debounceTime",
+    "title": "DebounceTime",
+    "info": "DebounceTime, es un operador para ejecutar algo en el tiempo en milisegundos que le enviamos como parametro. En este ejemplo vamos a escribir en un input y se va a ejecutar pasado un segundo, es muy interesante para buscar. No llamar a una API cada vez que escribimos algo. En este caso vamos a clickear en la pagina y al cabo de un segundo nos va a decir la posicion X."
   }
 ]
