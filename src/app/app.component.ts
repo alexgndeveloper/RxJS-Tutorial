@@ -12,9 +12,10 @@ import {
   Observable,
   forkJoin,
   Subject,
-  from,
   ConnectableObservable,
-  ReplaySubject
+  ReplaySubject,
+  BehaviorSubject,
+  merge
 } from 'rxjs';
 import { bufferTime, concatMap, delay, filter, map, mapTo, mergeMap, multicast, scan, share, switchMap, take, tap } from 'rxjs/operators';
 
@@ -173,6 +174,9 @@ export class AppComponent implements OnInit {
       case 'multicast':
         this.methodMulticastSubject();
         break;
+      case 'behaviorSubject':
+        this.methodBehaviorSubject();
+        break;
       case 'replaySubject':
         this.methodReplaySubject();
         break;
@@ -245,6 +249,28 @@ export class AppComponent implements OnInit {
     obs.next(4);
     obs.next(5);
     obs.subscribe(res => this.result += `Suscripcion: 2 ${res}\n`);
+  }
+
+  /**
+   * Creamos un observable del operador BehaviorSubject
+   */
+  private methodBehaviorSubject(): void {
+    this.showButtonUnsubcribe = true;
+    const subject = new BehaviorSubject(0);
+
+    const click$ = fromEvent(document, 'click').pipe(
+      map((e: any) => ({
+        x: e.clientX,
+        y: e.clientY
+      }))
+    );
+
+    const interval$ = interval(1000).pipe(
+      tap((res) => subject.next(res))
+    );
+
+    // Unimos ambos observables
+    this.subcription = merge(click$, interval$).subscribe(res => this.result += JSON.stringify(res) + '\n');
   }
 
   /**
