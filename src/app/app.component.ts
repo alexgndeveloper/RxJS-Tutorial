@@ -236,15 +236,15 @@ export class AppComponent implements OnInit {
    * Creamos un observable del operador ReplaySubject
    */
   private methodReplaySubject(): void {
-    const obs = new ReplaySubject(1); // Numero de buffer
+    const obs = new ReplaySubject(2); // Numero de buffer
 
     obs.next(1);
     obs.next(2);
     obs.next(3);
-    obs.subscribe(res => console.log('Suscripcion: 1', res));
+    obs.subscribe(res => this.result += `Suscripcion: 1 ${res}\n`);
     obs.next(4);
     obs.next(5);
-    obs.subscribe(res => console.log('Suscripcion: 2', res));
+    obs.subscribe(res => this.result += `Suscripcion: 2 ${res}\n`);
   }
 
   /**
