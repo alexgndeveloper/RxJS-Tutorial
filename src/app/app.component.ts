@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Meta, Title } from '@angular/platform-browser';
 import {
   timer,
   interval,
@@ -9,9 +10,14 @@ import {
   range,
   concat,
   Observable,
-  forkJoin
+  forkJoin,
+  Subject,
+  ConnectableObservable,
+  ReplaySubject,
+  BehaviorSubject,
+  merge
 } from 'rxjs';
-import { bufferTime, concatMap, delay, filter, map, mapTo, mergeMap, share, switchMap, take, tap } from 'rxjs/operators';
+import { bufferTime, concatMap, delay, filter, map, mapTo, mergeMap, multicast, scan, share, switchMap, take, tap } from 'rxjs/operators';
 
 import { TypeObservable } from './models/type-observable';
 
@@ -49,15 +55,29 @@ export class AppComponent implements OnInit {
    * Cargando muestra o no la terminal
    */
   public loading = false;
-
-  public imageCode = '';
+  /**
+   * Ruta de la Imagen de Codigo
+   */
+  public urlImageCode = '';
 
   /**
    *  Suscripcion
    */
   private subcription: Subscription = new Subscription();
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private titleService: Title,
+    private metaService: Meta,
+    private http: HttpClient
+  ) {
+    // Titulo de la aplicacion
+    this.titleService.setTitle(this.title);
+    this.metaService.addTags([
+      { name: 'keywords', content: 'Angular, RXJS, Tutorial' },
+      { name: 'description', content: 'Tutorial Angular RXJS' },
+      { name: 'robots', content: 'index, follow' }
+    ]);
+  }
 
   ngOnInit(): void {
     // Cargar los observables
@@ -100,7 +120,7 @@ export class AppComponent implements OnInit {
   public observableMethods(method: string, info: string): void {
     this.unsubcribe();
     this.info = info;
-    this.imageCode = `assets/images/${method}.png`;
+    this.urlImageCode = `assets/images/${method}.png`;
 
     switch (method) {
       case 'interval':
@@ -148,6 +168,18 @@ export class AppComponent implements OnInit {
       case 'scan':
         this.methodScan();
         break;
+      case 'subject':
+        this.methodSubject();
+        break;
+      case 'multicast':
+        this.methodMulticastSubject();
+        break;
+      case 'behaviorSubject':
+        this.methodBehaviorSubject();
+        break;
+      case 'replaySubject':
+        this.methodReplaySubject();
+        break;
       default:
         break;
     }
@@ -161,6 +193,7 @@ export class AppComponent implements OnInit {
     this.showButtonsErrorOrComplete = false;
     this.info = '';
     this.result = '';
+    this.urlImageCode = '';
     this.subcription.unsubscribe();
   }
 
@@ -204,10 +237,94 @@ export class AppComponent implements OnInit {
   }
 
   /**
+   * Creamos un observable del operador ReplaySubject
+   */
+  private methodReplaySubject(): void {
+    const obs = new ReplaySubject(2); // Numero de buffer
+
+    obs.next(1);
+    obs.next(2);
+    obs.next(3);
+    obs.subscribe(res => this.result += `Suscripcion: 1 ${res}\n`);
+    obs.next(4);
+    obs.next(5);
+    obs.subscribe(res => this.result += `Suscripcion: 2 ${res}\n`);
+  }
+
+  /**
+   * Creamos un observable del operador BehaviorSubject
+   */
+  private methodBehaviorSubject(): void {
+    this.showButtonUnsubcribe = true;
+    const subject = new BehaviorSubject(0);
+
+    const click$ = fromEvent(document, 'click').pipe(
+      map((e: any) => ({
+        x: e.clientX,
+        y: e.clientY
+      }))
+    );
+
+    const interval$ = interval(1000).pipe(
+      tap((res) => subject.next(res))
+    );
+
+    // Unimos ambos observables
+    this.subcription = merge(click$, interval$).subscribe(res => this.result += JSON.stringify(res) + '\n');
+  }
+
+  /**
+   * Creamos un observable del operador Multicast en Subject
+   */
+  private methodMulticastSubject(): void {
+    this.showButtonUnsubcribe = true;
+
+    const source = interval(3000).pipe(
+      tap((n) => this.result += `ID: ${n}\n`)
+    );
+
+    const subject = new Subject();
+
+    const multi = source.pipe(multicast(subject)) as ConnectableObservable<any>;
+
+    multi.subscribe(v => this.result += `localhost:4200/${v}\n`);
+    multi.subscribe(v => {
+      if (v !== 0) {
+        this.result += `localhost:4200/${(v - 1)}\n`;
+      }
+    });
+
+    this.subcription = multi.connect();
+  }
+
+  /**
+   * Creamos un observable del operador Subject
+   */
+  private methodSubject(): void {
+    const subject = new Subject<number>();
+
+    subject.subscribe({
+      next: (n) => this.result += `ObsA: ${n}\n`
+    });
+    subject.subscribe({
+      next: (n) => this.result += `ObsB: ${n + 100}\n`
+    });
+
+    subject.next(1);
+    subject.next(2);
+  }
+
+  /**
    * Creamos un observable del operador Scan
    */
   private methodScan(): void {
+    const src = of(1, 2, 3, 4, 5);
 
+    const scanObs = src.pipe(scan((a, c) => a + c, 0));
+
+    this.subcription = scanObs.subscribe((res) => {
+      this.result += `${res}\n`;
+    });
   }
 
   /**

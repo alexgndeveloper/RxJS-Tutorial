@@ -72,6 +72,26 @@
   {
     "name": "scan",
     "title": "Scan",
-    "info": "El operador Scan."
+    "info": "El operador Scan, es un observable en el que podemos realizar comprobaciones o lo que necesitemos con los valores recibidos. En este caso sumaremos el primer valor con el segundo, los valores son: 1, 2, 3, 4 y 5."
+  },
+  {
+    "name": "subject",
+    "title": "Subject",
+    "info": "El operador Subject, es un observable que puede tener multiples suscripciones. En este caso nos vamos a subcribir a dos suscripciones, una que nos muestre el valor y otra el valor + 100. Lo vamos a llamar dos veces con los valores de 1 y 2."
+  },
+  {
+    "name": "multicast",
+    "title": "Multicast en Subject",
+    "info": "El operador Multicast, nos sirve para poder ejecutar varias suscripciones a la vez. En este caso vamos a obtener un ID y lo vamos a utilizar en las dos suscripciones, el Id que recibimos y en la otra ese Id menos 1. Hemos realizado una comprobacion de si el Id es 0 no muestre el negativo."
+  },
+  {
+    "name": "behaviorSubject",
+    "title": "BehaviorSubject",
+    "info": "Behaviour Subject nos permite utilizar una característica realmente útil y que es la de poder \"recodar\" el último valor emitido por el Observable a todas las nuevas subscripciones, al margen del momento temporal en que éstas se establezcan, actuando como un mencanismo de \"sincronización\" entre todas las subscripciones que resulta realmente últil."
+  },
+  {
+    "name": "replaySubject",
+    "title": "ReplaySubject",
+    "info": "Replay Subject funciona de la misma forma que Behaviour Subject, pero así como Behaviour Subject solo tiene la habilidad de recordar el último valor emitido, con Replay Subject vamos a poder configurar el número de valores que queremos recordar a las nuevas subscripciones. En este caso vamos a ejecutar un interval que nos va a ir diciendo los segundos y un Click que nos dice donde hemos clickado. Es muy interesate por ejemplo para hacer un mapa de calor."
   }
 ]
