@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 })
 export class WebpathService {
   // Observables
-  public static OBSERVABLES = `${environment.dataFirebase}observable.json`;
+  public static OBSERVABLES = 'assets/observable.json';
   // Usuario Google
   public static USERS_GOOGLE = `${environment.apiGitHub}users/google`;
   // Usuario Microsoft

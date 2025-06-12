@@ -4,7 +4,6 @@
 
 export const environment = {
   production: false,
-  dataFirebase: 'https://rxjs-tutorial-413f7-default-rtdb.firebaseio.com/',
   apiGitHub: 'https://api.github.com/'
 };
 
